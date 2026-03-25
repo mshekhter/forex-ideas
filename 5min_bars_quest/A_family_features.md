@@ -1,4 +1,4 @@
-# Freeze Family A Properly So It Is Code-Ready and Audit-Ready
+# Family A - directional contribution totals
 
 ## What I will do here
 
