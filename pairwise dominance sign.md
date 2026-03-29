@@ -7,10 +7,10 @@ Train a sign scorer at the causal entry point using a frozen entry universe, a f
 ## 1. Freeze the entry object
 
 Use all causal `confirm_i` entries from causal replay (cell 7) as the raw universe.
-# Turning point rule (causal)in cell 7:
-# - Track running extreme in current direction
-# - Confirm reversal when excursion from extreme >= k * s_t
-# - s_t is EWMA(|Δprice|) computed causally 
+Turning point rule (causal)in cell 7:
+- Track running extreme in current direction
+- Confirm reversal when excursion from extreme >= k * s_t
+- s_t is EWMA(|Δprice|) computed causally 
 
 Rules:
 
@@ -204,11 +204,3 @@ $$
 \text{ambiguous otherwise}
 $$
 
-## GitHub formula preservation notes
-
-GitHub Markdown can preserve formulas using LaTeX-style math blocks:
-
-Inline example:
-
-```markdown
-$S = \mathrm{pnl}_{\text{long}} - \mathrm{pnl}_{\text{short}}$
