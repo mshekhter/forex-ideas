@@ -34,7 +34,7 @@ If I am to publish code, it is probably early failures, dead ends.
 2. Define a continuous pressure proxy $X_t$, for example:
 
 $$
-X_t = \operatorname{sign}\left(\sum_{i=t-k+1}^{t} r_i\right) \cdot E_t(k) \cdot \left(1 - Z_t(k)\right)
+X_t = \mathrm{sgn}\left(\sum_{i=t-k+1}^{t} r_i\right)\, E_t(k)\, \left(1 - Z_t(k)\right)
 $$
 
 This is:
