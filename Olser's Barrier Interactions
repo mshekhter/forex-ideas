@@ -1,0 +1,87 @@
+## Barrier interaction sign inference using multi-scale objective barriers and round-number proximity
+
+### Concept and causal motivation
+
+The most FX-specific structural support for barrier logic comes from Osler’s evidence that clustered stop-loss and take-profit orders around round numbers can generate:
+
+- reversals at predictable support and resistance levels
+- acceleration after levels are crossed, or price cascades
+
+This gives a causal narrative:
+
+latent clustered conditional orders → state-dependent pressure near barriers → observable bar behavior → short-horizon continuation or reversal
+
+### Prerequisites
+
+- multiyear bars with consistent pip precision
+- stable bar construction
+- a clear decision timestamp definition, with bar close recommended unless you can trade at bar open
+
+### Assumptions
+
+Must accept the following:
+
+1. Barrier-related order clustering exists, was documented historically in FX order data, and remains relevant enough in your sample. Osler’s order-book evidence came from a major bank and specific periods and pairs, so transportability is an assumption.
+
+2. After conditioning on bar-derived volatility and local path geometry, being near a barrier is approximately exogenous with respect to residual shocks over the next bars. This is a strong but sometimes workable approximation.
+
+3. Market impact is negligible. This is the usual retail or systematic backtest assumption. Otherwise, ther action influences the path (haha, I wish)...
+
+### Step-by-step application
+
+1. Choose barrier scales, for example 15, 60, and 240 bars for 1-minute data, then adjust for 5-minute or 10-minute bars.
+
+2. Compute objective rolling support and resistance, along with round-number distances at several steps, for example:
+   - 5 pips
+   - 10 pips
+   - 25 pips
+   - 50 pips
+
+3. Compute interaction-state features such as:
+   - touch
+   - rejection
+   - breach
+   - distance normalized by volatility
+
+4. Define a treatment variable that captures the structural event at entry, such as:
+   - breach above resistance at scale `k` with strong close
+   - rejection at resistance, meaning touch but close below, with negative CLV
+
+   Similar treatments exist for support.
+
+5. Estimate the conditional effect on forward return using back-door controls such as volatility, range, and path geometry. A DML or CATE estimator is recommended.
+
+6. At runtime, compute the treatment and controls. Trade direction is the sign of the estimated CATE for that event type, optionally gated by statistical confidence and a transaction-cost buffer.
+
+### Expected signal strength
+
+Medium is plausible in the narrow sense of conditional directional bias around barrier states, because Osler finds that support and resistance levels help predict intraday trend interruptions, and the microstructure explanation implies distinct behavior at and beyond barriers.
+
+In bar-only form, however, measurement error can erode effect size.
+
+### Computational cost
+
+- Moderate offline
+- Low live
+
+Rolling max and min barriers across multiple `k` values are cheap. The heavier part is CATE estimation.
+
+### Live suitability for bar-only EUR/USD
+
+High among bar-only methods because the hypothesis is structurally FX-specific and uses only OHLC.
+
+Main live risks:
+
+- vendor differences affecting touch logic
+- instability under changing microstructure
+
+### Failure modes and sanity checks
+
+- Spurious barrier effects due to selective definitions or data snooping  
+  Address with White Reality Check and barrier-definition sensitivity sweeps.
+
+- Vendor bar artifacts  
+  Different highs and lows can change touch and breach classification, so you must stress-test across tolerance settings.
+
+- Hidden confounding by latent order flow  
+  This is inevitable and should be treated as model risk.
