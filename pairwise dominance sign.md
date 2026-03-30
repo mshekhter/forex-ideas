@@ -71,6 +71,11 @@ Find which of the four feature blocks breaks first:
 - template fit
 - filtered state
 
+  Update - drop pairwise framing. It comes down to essentially the same linear direction - as it gets resolved in already known sign label for which no pairs are needed. 
+  As the features go - probe failure is a failure - no separation. 
+  these features are likely to be weak and the approach is weak, but it is good to fail early. 
+  I would not recommend this direction and pursuit. 
+
 8. Only then decide next move
 
 - If performance is weak, change features first
